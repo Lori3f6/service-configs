@@ -1,0 +1,27 @@
+services:
+  pg16:
+    restart: always
+    image: postgres:16.2-alpine3.19
+    hostname: syp-pg16
+    shm_size: 256mb
+    networks:
+      - internal
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'postgres']
+    volumes:
+      - ./pg16data:/var/lib/postgresql/data
+      - ./postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+    environment:
+      - 'POSTGRES_PASSWORD=langua' # You may replace this password with your one.
+
+  synapse:
+    restart: always
+    image: matrixdotorg/synapse:v1.105.1
+    hostname: syp-api
+    volumes:
+      - ./synapse_data:/data
+
+networks:
+  internal:
+    name: synapse-internal
+    external: true
