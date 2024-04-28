@@ -108,3 +108,4 @@ networks:
     # setup network shared between docker composers as this post:
     # https://stackoverflow.com/questions/38088279/communication-between-multiple-docker-compose-projects      
     name: mastodon-internal
+    external: true

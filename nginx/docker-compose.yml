@@ -17,5 +17,8 @@ services:
 networks:
   mst-internal:
     name: mastodon-internal
+    external: true
   mtx-internal:
     name: matrix-internal
+    external: true
+
