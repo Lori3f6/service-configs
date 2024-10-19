@@ -1,7 +1,7 @@
 services:
   pg16:
     restart: always
-    image: postgres:16.2-alpine3.19
+    image: postgres:16.4-alpine3.20
     hostname: mst-pg16
     shm_size: 256mb
     networks:
@@ -16,7 +16,7 @@ services:
 
   redis:
     restart: always
-    image: redis:7.2.4-alpine3.19
+    image: redis:7.4.1-alpine3.20
     hostname: mst-redis
     networks:
       - internal
@@ -56,14 +56,14 @@ services:
 
   web:
     restart: always
-    image: tootsuite/mastodon:v4.2.8-yai
+    image: tootsuite/mastodon:v4.3.0-yai
     hostname: mst-web
     env_file: env_settings
     command: bash -c "rm -f /mastodon/tmp/pids/server.pid; bundle exec rails s -p 3000"
     networks:
       - internal
     healthcheck:
-      test: ['CMD-SHELL', 'wget -q --spider --proxy=off localhost:3000/health || exit 1']
+      test:  ['CMD-SHELL',"curl -s --noproxy localhost localhost:3000/health | grep -q 'OK' || exit 1"]
     depends_on:
       - pg16
       - redis
@@ -75,7 +75,7 @@ services:
 
   sidekiq:
     restart: always
-    image: tootsuite/mastodon:v4.2.8-yai
+    image: tootsuite/mastodon:v4.3.0-yai
     hostname: mst-sidekiq
     env_file: env_settings
     command: bundle exec sidekiq
@@ -91,14 +91,14 @@ services:
 
   streaming:
     restart: always
-    image: tootsuite/mastodon:v4.2.8-yai
+    image: tootsuite/mastodon-streaming:v4.2.8-yai
     hostname: mst-streaming
     env_file: env_settings
-    command: node ./streaming
+    command: node ./streaming/index.js
     networks:
       - internal
     healthcheck:
-      test: ['CMD-SHELL', 'wget -q --spider --proxy=off localhost:4000/api/v1/streaming/health || exit 1']
+      test: ['CMD-SHELL', "curl -s --noproxy localhost localhost:4000/api/v1/streaming/health | grep -q 'OK' || exit 1"]
     depends_on:
       - pg16
       - redis

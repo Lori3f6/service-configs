@@ -1,10 +1,9 @@
 services:
   nginx:
-    image: nginx:1.25.5-alpine3.19
+    image: nginx:1.27.2-alpine3.20
     restart: always
     networks:
       - mst-internal
-      - mtx-internal
     ports:
       - "80:80"
       - "443:443"
@@ -18,7 +17,3 @@ networks:
   mst-internal:
     name: mastodon-internal
     external: true
-  mtx-internal:
-    name: matrix-internal
-    external: true
-
