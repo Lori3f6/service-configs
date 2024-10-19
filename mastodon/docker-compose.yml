@@ -27,7 +27,7 @@ services:
 
   esearch:
     restart: always
-    image: elasticsearch:8.13.0
+    image: elasticsearch:8.15.3
     hostname: mst-esearch
     environment:
       - "ES_JAVA_OPTS=-Xms4096m -Xmx4096m -Des.enforce.bootstrap.checks=true"
