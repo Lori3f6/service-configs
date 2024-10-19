@@ -91,7 +91,7 @@ services:
 
   streaming:
     restart: always
-    image: tootsuite/mastodon-streaming:v4.2.8-yai
+    image: tootsuite/mastodon-streaming:v4.3.0-yai
     hostname: mst-streaming
     env_file: env_settings
     command: node ./streaming/index.js
